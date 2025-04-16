@@ -79,6 +79,8 @@ local Theme = {
 
     -- Other
     DefaultWatermark = "EDEN 12 UI | %s | %s", -- UserID, GameName
+    TimeUpdateInterval = 1, -- Update time every 1 second (adjust 1 to 60 for minutes etc.)
+    TimeFormat = "%I:%M %p", -- 12-hour format with AM/PM. Use "%H:%M" for 24-hour.
 }
 
 -- Function to adjust animation speed globally
@@ -1378,7 +1380,49 @@ function UILibrary.New(gameName, userId, rank)
 
     WindowInstances[screenGui] = self -- Track this window instance
 
-    return self
+    -- Initial Setup
+    local baseWatermarkFormat = self.Theme.DefaultWatermark .. " | " -- Add separator for time
+    windowParts.Watermark.Text = string.format(baseWatermarkFormat, self.UserID, self.GameName) .. os.date(self.Theme.TimeFormat) -- Initial text with time
+    windowParts.UserNameLabel.Text = self.UserID
+    windowParts.UserRankLabel.Text = self.Rank
+
+    -- Make window draggable
+    local dragDisconnect = Draggable.EnableDrag(windowParts.MainUI, windowParts.MainUI)
+    table.insert(self.Connections, dragDisconnect)
+
+
+    -- Time Update Loop (Add this section) ------------------
+    local timeUpdateInterval = self.Theme.TimeUpdateInterval
+    local timeFormat = self.Theme.TimeFormat
+    -- Format the base text ONCE
+    local baseWatermarkText = string.format(baseWatermarkFormat, self.UserID, self.GameName)
+
+    local function updateTime()
+        -- Check if UI elements still exist before trying to update
+        if not self.ScreenGui or not self.ScreenGui.Parent or not windowParts.Watermark or not windowParts.Watermark.Parent then
+            return false -- Stop the loop if UI is destroyed
+        end
+        local currentTime = os.date(timeFormat)
+        windowParts.Watermark.Text = baseWatermarkText .. currentTime
+        return true -- Continue loop
+    end
+
+    -- Use task.spawn for the loop
+    local timeUpdateThread = task.spawn(function()
+        while true do
+            local continue = updateTime()
+            if not continue then break end -- Exit loop if updateTime returns false
+            task.wait(timeUpdateInterval)
+        end
+    end)
+    -- Store thread to potentially cancel later if needed (optional)
+    -- table.insert(self.Connections, timeUpdateThread) -- task.cancel(thread) could be used
+
+    ----------------------------------------------------------
+
+    WindowInstances[screenGui] = self -- Track this window instance
+
+    return self -- Return self as before
 end
 
 -- Destructor (Example - Add if needed for full cleanup)
