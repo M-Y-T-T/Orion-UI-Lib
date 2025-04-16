@@ -530,7 +530,10 @@ ComponentTemplates.Window = function(props)
     sidebarContentHolder.ZIndex = Theme.BaseZIndex + 1
     sidebarContentHolder.Parent = sidebar
     local sidebarPadding = Instance.new("UIPadding")
-    sidebarPadding.Padding = UDim.new(0, 8) -- Uniform padding
+    sidebarPadding.PaddingTop = UDim.new(0, 8)
+    sidebarPadding.PaddingBottom = UDim.new(0, 8)
+    sidebarPadding.PaddingLeft = UDim.new(0, 8)
+    sidebarPadding.PaddingRight = UDim.new(0, 8)
     sidebarPadding.Parent = sidebarContentHolder
 
     -- Sidebar: User Info Section (Top)
@@ -545,7 +548,10 @@ ComponentTemplates.Window = function(props)
     userInfoLayout.Padding = UDim.new(0, 2)
     userInfoLayout.Parent = userInfo
     local userInfoPadding = Instance.new("UIPadding")
-    userInfoPadding.Padding = UDim.new(0, 4)
+    userInfoPadding.PaddingTop = UDim.new(0, 4)
+    userInfoPadding.PaddingBottom = UDim.new(0, 4)
+    userInfoPadding.PaddingLeft = UDim.new(0, 4)
+    userInfoPadding.PaddingRight = UDim.new(0, 4)
     userInfoPadding.Parent = userInfo
 
     local userNameLabel = ComponentTemplates.BaseLabel({ Name = "UserName", Text = "UserID", Font = Theme.FontSemibold, TextColor3 = Theme.Text, TextSize = Theme.TextSize, TextXAlignment = Enum.TextXAlignment.Left, LayoutOrder = 1})
@@ -644,7 +650,10 @@ ComponentTemplates.Window = function(props)
     cpLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
     cpLayout.Parent = colorPickerContent
     local cpPadding = Instance.new("UIPadding")
-    cpPadding.Padding = UDim.new(0, 10)
+    cpPadding.PaddingTop = UDim.new(0, 10)
+    cpPadding.PaddingBottom = UDim.new(0, 10)
+    cpPadding.PaddingLeft = UDim.new(0, 10)
+    cpPadding.PaddingRight = UDim.new(0, 10)
     cpPadding.Parent = colorPickerContent
 
 
@@ -691,9 +700,11 @@ ComponentTemplates.CategoryButton = function(props)
     contentLayout.Padding = UDim.new(0, 8)
     contentLayout.Parent = content
     local contentPadding = Instance.new("UIPadding")
-    contentPadding.PaddingLeft = UDim.new(0, 10)
-    contentPadding.PaddingRight = UDim.new(0, 10)
-    contentPadding.Parent = content
+    contentPadding.PaddingTop = UDim.new(0, 8)
+    contentPadding.PaddingBottom = UDim.new(0, 8)
+    contentPadding.PaddingLeft = UDim.new(0, 8)
+    contentPadding.PaddingRight = UDim.new(0, 8)
+    contentPadding.Parent = contentFrame
 
     local icon = Instance.new("ImageLabel")
     icon.Name = "Icon"
